@@ -2,6 +2,7 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include<math.h>
 #include "Point.h"
 using namespace std;
 class Data

@@ -35,6 +35,7 @@ Data::Data(string filename)
 }
 Data::Data(string filename, int n)
 {
+	number = n;
 	float line[3];
 	city = new Point[n];
 	char test[1];
@@ -47,7 +48,7 @@ Data::Data(string filename, int n)
 			line[0] = test[0];
 			fin >> line[1] >> line[2];
 			city[0].put(line[1], line[2]);
-			for (int i = 1; i < 52; i++) {
+			for (int i = 1; i < number; i++) {
 				fin >> line[0] >> line[1] >> line[2];
 				city[i].put(line[1], line[2]);
 			}
@@ -73,6 +74,10 @@ void Data::showData(int n){
 }
 
 float Data::calculateRoute() {
-	
-
+	float cost = 0;
+	for(int i=0;i<number;i++)
+	{ 
+		cost += sqrt(pow(city[i].getX() - city[(i+1) % number].getX(),2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
+	}
+	return cost;
 }

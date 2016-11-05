@@ -12,7 +12,7 @@ void main(){
 
 	data.showData(52);
 	
-	
+	cout << data.calculateRoute();
 	
 	
 	
