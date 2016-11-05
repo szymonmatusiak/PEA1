@@ -19,6 +19,7 @@ Data::Data(string filename)
 		route[i] = i;
 		cout << route[i];
 	}
+
 	fstream fin;
 	fin.open(filename, ios::in);
 	while (!fin.eof()) {
@@ -36,10 +37,6 @@ Data::Data(string filename)
 		}
 	}
 	fin.close();
-	for (int i = 0; i < 52; i++) {
-		cout << i << ": ";
-		city[i].showData();
-	}
 }
 Data::Data(string filename, int n)
 {
@@ -51,6 +48,7 @@ Data::Data(string filename, int n)
 		route[i] = i;
 	}
 	char test[1];
+
 	fstream fin;
 	fin.open(filename, ios::in);
 	while (!fin.eof()) {
@@ -68,10 +66,6 @@ Data::Data(string filename, int n)
 		}
 	}
 	fin.close();
-	/*for (int i = 0; i < n; i++) {
-		cout << i << ": ";
-		city[i].showData();
-	}*/
 }
 
 Data::~Data()
@@ -104,28 +98,20 @@ void Data::randomRoute()
 			route[i] = (int)rand() % number;
 		}
 		table[route[i]] = 1;
-		cout << route[i] << endl;
+		//cout << route[i] << endl;
 	}
 }
 
-/*float Data::calculateRoute() {
+float Data::calculateRoute() {
 	float cost = 0;
 	float cost1 = 0;
 	for(int i=0;i<number;i++)
 	{ 
-		cost += sqrt( pow(city[route[i]].getX() - city[(route[i + 1]) % number].getX(), 2) + pow(city[route[i]].getY() - city[(route[i + 1]) % number].getY(), 2));
+		cost += sqrt( pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
 		cost1 += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
-		cout<< i << ":" << cost << "	" << cost1 << endl;
-		cout << i << ":" << (i + 1) % number << "	" << (route[i + 1]) % number << endl;
+		//cout<< i << ":" << cost << "	" << cost1 << endl;
+		//cout << i << ":" << (i + 1) % number << "	" << (route[(i + 1) % number]) << endl;
 
-	}
-	return cost;
-}*/
-float Data::calculateRoute1() {
-	float cost = 0;
-	for (int i = 0; i<number; i++)
-	{
-		cost += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
 	}
 	return cost;
 }
