@@ -1,18 +1,21 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-
+#include<time.h>
 #include"Point.h"
 #include"Data.h"
 using namespace std;
 
 void main(){
+	srand(time(NULL));
 	string fileName = "berlin52.tsp";
+	Data data1 = Data();
 	Data data = Data(fileName, 52);
-
-	data.showData(52);
+	data1.randomRoute();
+	//data.showData(52);
 	
 	cout << data.calculateRoute();
+
 	
 	
 	

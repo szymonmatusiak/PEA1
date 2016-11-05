@@ -1,7 +1,10 @@
 #include "Data.h"
-
+//domyœlny tylko do testów
 Data::Data()
 {
+	city = new Point[10];
+	route = new int[10];
+	number = 10;
 }
 
 
@@ -10,7 +13,11 @@ Data::Data(string filename)
 {
 	float line[3];
 	city = new Point[52];
+	route = new int[52];
 	char test[1];
+	for (int i = 0; i < number; i++) {
+		route[i] = 0;
+	}
 	fstream fin;
 	fin.open(filename, ios::in);
 	while (!fin.eof()) {
@@ -38,6 +45,10 @@ Data::Data(string filename, int n)
 	number = n;
 	float line[3];
 	city = new Point[n];
+	route = new int[n];
+	for (int i = 0; i < number; i++) {
+		route[i] = 0;
+	}
 	char test[1];
 	fstream fin;
 	fin.open(filename, ios::in);
@@ -66,10 +77,33 @@ Data::~Data()
 {
 }
 
+int Data::getNumber()
+{
+	return number;
+}
+
 void Data::showData(int n){
 	for (int i = 0; i < n; i++) {
 		cout << i << ": ";
 		city[i].showData();
+	}
+}
+
+void Data::randomRoute()
+{
+	bool* table;
+	table = new bool[number];
+	fill_n(table, number, 0);
+
+	for (int i = 0; i < number; i++)
+	{
+		route[i] = (int)rand() % number;
+		while (table[route[i]])
+		{
+			route[i] = (int)rand() % number;
+		}
+		table[route[i]] = 1;
+		cout << route[i] << endl;
 	}
 }
 
