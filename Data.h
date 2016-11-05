@@ -22,5 +22,6 @@ public:
 	void showData(int);
 	void randomRoute();
 	float calculateRoute();
+	float calculateRoute1();
 };
 

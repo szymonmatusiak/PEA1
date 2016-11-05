@@ -11,10 +11,11 @@ void main(){
 	string fileName = "berlin52.tsp";
 	Data data1 = Data();
 	Data data = Data(fileName, 52);
-	data1.randomRoute();
+	//cout << data.calculateRoute1() << endl;
+	//data.randomRoute();
 	//data.showData(52);
 	
-	cout << data.calculateRoute();
+	data.calculateRoute1();
 
 	
 	
