@@ -11,6 +11,7 @@ private:
 	int number;
 	Point* city;
 	int* route;
+	//int* bestRoute; //nie jestem pewien
 
 public:
 	Data();
@@ -22,6 +23,7 @@ public:
 	void showData();
 	void randomRoute();
 	float calculateRoute();
-	float calculateRoute1();
+
+	void swap();
 };
 
