@@ -19,7 +19,7 @@ public:
 	Data(string, int);
 
 	int getNumber();
-	void showData(int);
+	void showData();
 	void randomRoute();
 	float calculateRoute();
 	float calculateRoute1();

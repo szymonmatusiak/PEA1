@@ -11,74 +11,40 @@ Data::Data()
 
 Data::Data(string filename)
 {
+	string temp;
 	float line[3];
-	city = new Point[52];
-	route = new int[52];
-	char test[1];
-	for (int i = 0; i < number; i++) {
-		route[i] = i;
-		cout << route[i];
-	}
 
 	fstream fin;
 	fin.open(filename, ios::in);
-	while (!fin.eof()) {
-		fin >> test[0];
-		//cout << test[0];
-		if (test[0] == '1') {
-			line[0] = test[0];
-			fin >> line[1] >> line[2];
-			city[0].put(line[1], line[2]);
-			for (int i = 1; i < 52; i++) {
-				fin >> line[0] >> line[1] >> line[2];
-				city[i].put(line[1], line[2]);
-			}
-			break;
+		while (temp != "DIMENSION:")
+		{
+			fin >> temp;
 		}
-	}
+		fin >> number;
+		city = new Point[number];
+		route = new int[number];
+		while (temp != "NODE_COORD_SECTION")
+		{
+			fin >> temp;
+		}
+
+		for (int i = 0; i < number; i++) {
+			fin >> line[0] >> line[1] >> line[2];
+			city[i].put(line[1], line[2]);
+			city[i].showData();
+		}
 	fin.close();
 }
-Data::Data(string filename, int n)
-{
-	number = n;
-	float line[3];
-	city = new Point[n];
-	route = new int[n];
-	for (int i = 0; i < number; i++) {
-		route[i] = i;
-	}
-	char test[1];
-
-	fstream fin;
-	fin.open(filename, ios::in);
-	while (!fin.eof()) {
-		fin >> test[0];
-		//cout << test[0];
-		if (test[0] == '1') {
-			line[0] = test[0];
-			fin >> line[1] >> line[2];
-			city[0].put(line[1], line[2]);
-			for (int i = 1; i < number; i++) {
-				fin >> line[0] >> line[1] >> line[2];
-				city[i].put(line[1], line[2]);
-			}
-			break;
-		}
-	}
-	fin.close();
-}
-
 Data::~Data()
 {
 }
-
 int Data::getNumber()
 {
 	return number;
 }
 
-void Data::showData(int n){
-	for (int i = 0; i < n; i++) {
+void Data::showData(){
+	for (int i = 0; i < number; i++) {
 		cout << i << ": ";
 		city[i].showData();
 	}

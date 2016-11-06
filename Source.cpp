@@ -10,11 +10,11 @@ void main(){
 	srand(time(NULL));
 	string fileName = "berlin52.tsp";
 	Data data1 = Data();
-	Data data = Data(fileName,52);
-	data.randomRoute();
-	//data.showData(52);
+	Data data = Data(fileName);
+	//data.randomRoute();
+	data.showData();
 	
-	data.calculateRoute();
+	//data.calculateRoute();
 
 	
 	
