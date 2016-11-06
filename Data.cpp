@@ -115,3 +115,19 @@ float Data::calculateRoute() {
 	}
 	return cost;
 }
+
+void Data::swap()
+{
+	int a =1, b=2;
+	int temp=0;
+
+	while (a==b)
+	{
+		a = (int)rand() % number;
+		b = (int)rand() % number;
+	}
+	temp = route[a];
+	route[a] = route[b];
+	route[b] = temp;
+}
+
