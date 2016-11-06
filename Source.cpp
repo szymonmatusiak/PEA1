@@ -9,9 +9,12 @@ using namespace std;
 void main(){
 	srand(time(NULL));
 	string fileName = "berlin52.tsp";
+	string fileNameOpt = "berlin52.opt.tour";
+
 	Data data = Data(fileName);
-	data.search();
+	//data.search();
 	data.randomRoute();
+	cout<<data.loadBest(fileNameOpt);
 	//data.showData();
 	
 	//data.calculateRoute();

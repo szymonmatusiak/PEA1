@@ -11,21 +11,20 @@ private:
 	int number;
 	Point* city;
 	int* route;
-	//int* bestRoute; //nie jestem pewien
+	int* bestRoute; //nie jestem pewien
 
 public:
 	Data();
 	~Data();
 	Data(string);
-	Data(string, int);
-
 	int getNumber();
 	void showData();
 	void randomRoute();
 	double calculateRoute();
-
+	double calculateBestRoute();
 	void swap();
-
 	void search();
+
+	double loadBest(string);
 };
 

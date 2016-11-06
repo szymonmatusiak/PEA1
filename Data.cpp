@@ -21,6 +21,8 @@ Data::Data(string filename)
 		fin >> number;
 		city = new Point[number];
 		route = new int[number];
+		bestRoute = new int[number];
+
 		while (temp != "NODE_COORD_SECTION")
 		{
 			fin >> temp;
@@ -106,9 +108,9 @@ void Data::search() {
 	randomRoute();
 	lowestCost = cost = calculateRoute();
 
-	for (int i = 0; i < 100000; i++)
+	for (int i = 0; i < 50000; i++)
 	{
-		if (improvment > 200) {
+		if (improvment > 2000) {
 			randomRoute();
 			improvment = 0;
 		}
@@ -125,4 +127,31 @@ void Data::search() {
 	}
 	cout << lowestCost << endl;
 
+}
+double Data::loadBest(string filename) {
+	string temp;
+
+	fstream fin;
+	fin.open(filename, ios::in);
+	while (temp != "TOUR_SECTION")
+	{
+		fin >> temp;
+	}
+
+	for (int i = 0; i < number; i++) {
+		fin >> route[i];
+	}
+	fin.close();
+	cout<<"Najlepsza: "<<calculateBestRoute();
+	return calculateBestRoute();
+}
+double Data::calculateBestRoute() {
+	float cost = 0;
+	float cost1 = 0;
+	for (int i = 0; i<number; i++)
+	{
+		cost += sqrt(pow(city[bestRoute[i]].getX() - city[(bestRoute[(i + 1) % number])].getX(), 2) + pow(city[bestRoute[i]].getY() - city[(bestRoute[(i + 1) % number])].getY(), 2));
+
+	}
+	return cost;
 }
