@@ -22,8 +22,10 @@ public:
 	int getNumber();
 	void showData();
 	void randomRoute();
-	float calculateRoute();
+	double calculateRoute();
 
 	void swap();
+
+	void search();
 };
 

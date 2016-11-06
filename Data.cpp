@@ -7,8 +7,6 @@ Data::Data()
 	number = 10;
 }
 
-
-
 Data::Data(string filename)
 {
 	string temp;
@@ -31,7 +29,7 @@ Data::Data(string filename)
 		for (int i = 0; i < number; i++) {
 			fin >> line[0] >> line[1] >> line[2];
 			city[i].put(line[1], line[2]);
-			city[i].showData();
+			//city[i].showData();
 		}
 	fin.close();
 }
@@ -68,7 +66,7 @@ void Data::randomRoute()
 	}
 }
 
-float Data::calculateRoute() {
+double Data::calculateRoute() {
 	float cost = 0;
 	float cost1 = 0;
 	for(int i=0;i<number;i++)
@@ -84,7 +82,7 @@ float Data::calculateRoute() {
 
 void Data::swap()
 {
-	int a =1, b=2;
+	int a =1, b=1;
 	int temp=0;
 
 	while (a==b)
@@ -97,3 +95,34 @@ void Data::swap()
 	route[b] = temp;
 }
 
+void Data::search() {
+	int improvment = 0;
+	double cost=0;
+	double lowestCost=0;
+	int* bestRoute = new int[number];
+
+
+
+	randomRoute();
+	lowestCost = cost = calculateRoute();
+
+	for (int i = 0; i < 100000; i++)
+	{
+		if (improvment > 200) {
+			randomRoute();
+			improvment = 0;
+		}
+		cost = calculateRoute();
+		cout << i << ": " << cost << endl;
+		if (lowestCost > cost) 
+		{
+			lowestCost = cost;
+			for (int i = 0; i < number; i++) 
+				bestRoute[i] = route[i];
+			cout <<"		" <<lowestCost << endl;
+		}	
+		swap();
+	}
+	cout << lowestCost << endl;
+
+}

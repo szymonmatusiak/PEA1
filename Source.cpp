@@ -9,10 +9,10 @@ using namespace std;
 void main(){
 	srand(time(NULL));
 	string fileName = "berlin52.tsp";
-	Data data1 = Data();
 	Data data = Data(fileName);
-	//data.randomRoute();
-	data.showData();
+	data.search();
+	data.randomRoute();
+	//data.showData();
 	
 	//data.calculateRoute();
 
