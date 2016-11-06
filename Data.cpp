@@ -83,47 +83,67 @@ double Data::calculateRoute() {
 	return cost;
 }
 
-void Data::swap()
+double Data::calculateRoute(int* route) {
+	float cost = 0;
+	float cost1 = 0;
+	for (int i = 0; i<number; i++)
+	{
+		cost += sqrt(pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
+
+	}
+	return cost;
+}
+
+void Data::swap(int* temp1, int* temp2)
 {
 	int a =1, b=1;
-	int temp=0;
 
 	while (a==b)
 	{
-		a = (int)rand() % number;
-		b = (int)rand() % number;
+		a = (int)rand() % (number - 1) + 1;
+		b = (int)rand() % (number - 1) + 1;
 	}
-	temp = route[a];
-	route[a] = route[b];
-	route[b] = temp;
+
+	for (int i = 0; i < number; i++)
+		temp2[i] = temp1[i];
+
+	temp2[a] = temp1[b];
+	temp2[b] = temp1[a];
 }
 
 void Data::search() {
-	int notImprovment = 0;
+	int notImprovement = 0;
 	int* route2 = new int[number];
 	double cost = 0;
 	double cost2 = 0;
 	double lowestCost = 0;
 	double T = 0;
 	T = setT();
-
+	double minT = 0.00001;
+	double dT = 0.9999;
 	randomRoute();
+	for (int i = 0; i < number; i++) {
+		route2[i] = route[i];
+	}
+
 	lowestCost = cost = calculateRoute();
 
-	for (int i = 0; i < 10000; i++)
+	while(T > minT)
 	{
-		if (notImprovment > 200) {
+		if (notImprovement > 200) {
 			randomRoute();
-			notImprovment = 0;
+			notImprovement = 0;
+			cost = calculateRoute(route);
 		}
-		cost = calculateRoute();
-		cost2 = calculateRoute();
+		swap(route, route2);
+		cost2 = calculateRoute(route2);
 
 		if (cost > cost2) {
 			for (int i = 0; i < number; i++)
 				route[i] = route2[i];
 			cost = cost2;
-			if (lowestCost > cost)
+			notImprovement = 0;
+			if (lowestCost > cost2)
 			{
 				lowestCost = cost;
 				for (int i = 0; i < number; i++)
@@ -132,14 +152,17 @@ void Data::search() {
 			}
 		}
 		else {
-			if ( ( 1 / ( 1 + pow( M_E, (cost-cost2)/T)))>(pow(M_E, (cost - cost2) / T))){
+			if ( (double)rand()/RAND_MAX < exp((cost - cost2) / T)){
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
 				cost = cost2;
+				notImprovement = 0;
 			}
 		}
-		cout << cost << endl;
-		swap();
+		//cout <<i<<": "<< cost << endl;
+		notImprovement++;
+
+		T *= dT;
 	}
 	cout <<"asd"<< lowestCost << endl;
 }
@@ -190,5 +213,6 @@ double Data::setT() {
 			minCost = currentCost;
 	}
 	T = -(maxCost - minCost) / log(0.9);
-	return 0;
+	cout <<"temp" <<T << endl;
+	return T;
 }

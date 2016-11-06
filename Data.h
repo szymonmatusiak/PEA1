@@ -2,7 +2,6 @@
 #include<iostream>
 #include<string>
 #include<fstream>
-#include<math.h>
 #include <cmath>
 #define M_E        2.71828182845904523536
 #include "Point.h"
@@ -22,9 +21,11 @@ public:
 	int getNumber();
 	void showData();
 	void randomRoute();
-	double calculateRoute();
+	double calculateRoute();//przepisac
+	double calculateRoute(int*);//przepisac
+
 	double calculateBestRoute();
-	void swap();
+	void swap(int*, int*);
 	void search();
 
 	double loadBest(string);
