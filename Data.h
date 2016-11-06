@@ -3,6 +3,8 @@
 #include<string>
 #include<fstream>
 #include<math.h>
+#include <cmath>
+#define M_E        2.71828182845904523536
 #include "Point.h"
 using namespace std;
 class Data
@@ -26,5 +28,7 @@ public:
 	void search();
 
 	double loadBest(string);
+
+	double setT();
 };
 

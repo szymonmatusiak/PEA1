@@ -29,6 +29,7 @@ Data::Data(string filename)
 		}
 
 		for (int i = 0; i < number; i++) {
+			bestRoute[i] = i;
 			fin >> line[0] >> line[1] >> line[2];
 			city[i].put(line[1], line[2]);
 			//city[i].showData();
@@ -74,7 +75,7 @@ double Data::calculateRoute() {
 	for(int i=0;i<number;i++)
 	{ 
 		cost += sqrt( pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
-		cost1 += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
+		//cost1 += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
 		//cout<< i << ":" << cost << "	" << cost1 << endl;
 		//cout << i << ":" << (i + 1) % number << "	" << (route[(i + 1) % number]) << endl;
 
@@ -98,35 +99,49 @@ void Data::swap()
 }
 
 void Data::search() {
-	int improvment = 0;
-	double cost=0;
-	double lowestCost=0;
-	int* bestRoute = new int[number];
-
-
+	int notImprovment = 0;
+	int* route2 = new int[number];
+	double cost = 0;
+	double cost2 = 0;
+	double lowestCost = 0;
+	double T = 0;
+	T = setT();
 
 	randomRoute();
 	lowestCost = cost = calculateRoute();
 
-	for (int i = 0; i < 50000; i++)
+	for (int i = 0; i < 10000; i++)
 	{
-		if (improvment > 2000) {
+		if (notImprovment > 200) {
 			randomRoute();
-			improvment = 0;
+			notImprovment = 0;
 		}
 		cost = calculateRoute();
-		cout << i << ": " << cost << endl;
-		if (lowestCost > cost) 
-		{
-			lowestCost = cost;
-			for (int i = 0; i < number; i++) 
-				bestRoute[i] = route[i];
-			cout <<"		" <<lowestCost << endl;
-		}	
+		cost2 = calculateRoute();
+
+		if (cost > cost2) {
+			for (int i = 0; i < number; i++)
+				route[i] = route2[i];
+			cost = cost2;
+			if (lowestCost > cost)
+			{
+				lowestCost = cost;
+				for (int i = 0; i < number; i++)
+					bestRoute[i] = route[i];
+				cout << "		" << lowestCost << endl;
+			}
+		}
+		else {
+			if ( ( 1 / ( 1 + pow( M_E, (cost-cost2)/T)))>(pow(M_E, (cost - cost2) / T))){
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+			}
+		}
+		cout << cost << endl;
 		swap();
 	}
-	cout << lowestCost << endl;
-
+	cout <<"asd"<< lowestCost << endl;
 }
 double Data::loadBest(string filename) {
 	string temp;
@@ -139,19 +154,41 @@ double Data::loadBest(string filename) {
 	}
 
 	for (int i = 0; i < number; i++) {
-		fin >> route[i];
+		fin >> bestRoute[i];
+		bestRoute[i]--;
+		cout <<i<<": "<< bestRoute[i]<<endl;
 	}
 	fin.close();
 	cout<<"Najlepsza: "<<calculateBestRoute();
 	return calculateBestRoute();
 }
 double Data::calculateBestRoute() {
-	float cost = 0;
-	float cost1 = 0;
+	double cost = 0;
 	for (int i = 0; i<number; i++)
 	{
+		cout << i << ": " << bestRoute[i] << " " << bestRoute[(i + 1) % number]<<endl;
 		cost += sqrt(pow(city[bestRoute[i]].getX() - city[(bestRoute[(i + 1) % number])].getX(), 2) + pow(city[bestRoute[i]].getY() - city[(bestRoute[(i + 1) % number])].getY(), 2));
-
+		cout << cost<<endl;
 	}
 	return cost;
+}
+double Data::setT() {
+	double maxCost = 0;
+	double minCost = 0;
+	double currentCost = 0;
+	double T;
+
+	randomRoute();
+	maxCost = minCost = calculateRoute();
+	for (int i = 0; i < number*number; i++) {
+
+		randomRoute();
+		currentCost = calculateRoute();
+		if (currentCost > maxCost)
+			maxCost = currentCost;
+		else if(currentCost < minCost)
+			minCost = currentCost;
+	}
+	T = -(maxCost - minCost) / log(0.9);
+	return 0;
 }

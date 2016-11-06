@@ -12,16 +12,12 @@ void main(){
 	string fileNameOpt = "berlin52.opt.tour";
 
 	Data data = Data(fileName);
-	//data.search();
-	data.randomRoute();
-	cout<<data.loadBest(fileNameOpt);
+	data.search();
+	//data.randomRoute();
+	//data.loadBest(fileNameOpt);
 	//data.showData();
 	
 	//data.calculateRoute();
-
-	
-	
-	
 	
 	
 	
