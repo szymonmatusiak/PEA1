@@ -22,6 +22,8 @@ public:
 	int getNumber();
 	void showData();
 	void search(string, double);
+	void search100(string, double);
+
 	void randomRoute();
 	double calculateRoute();
 	double calculateRoute(int*);

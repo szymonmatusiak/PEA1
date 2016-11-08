@@ -17,16 +17,16 @@ void main(){
 	Data data2 = Data(fileName[2]);
 
 	for (int i = 0; i < 5; i++) {
-		data0.search(fileName[0], dT[i]);
+		data0.search100(fileName[0], dT[i]);
 	
 	}
 	for (int i = 0; i < 5; i++) {
-		data1.search(fileName[1], dT[i]);
+		data1.search100(fileName[1], dT[i]);
 
 	}
 	for (int i = 0; i < 5; i++) {
-		data2.search(fileName[2], dT[i]);
-	}
+		data2.search100(fileName[2], dT[i]);
+	}*/
 	data0.~Data();
 	data1.~Data();
 	data2.~Data();

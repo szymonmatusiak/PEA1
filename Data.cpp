@@ -159,60 +159,134 @@ void Data::search() {
 	}
 	cout <<"asd"<< lowestCost << endl;
 }
-
-void Data::search(string name,double dT) {
+void Data::search(string name, double dT) {
 	int* route2 = new int[number];
 	double cost = 0;
 	double cost2 = 0;
-	double time = 0;
-	double lowestCost = 0;
+	double time = 0 ;
+	double lowestCost = 0 ;
 	double T = 0;
-	T = setT();
 	double minT = 0.00001;
-	randomRoute();
-	for (int i = 0; i < number; i++) {
-		route2[i] = route[i];
-	}
 
-	lowestCost = cost = calculateRoute();
-	chrono::time_point<chrono::system_clock> start, end;
-	start = chrono::system_clock::now();
-	while (T > minT)
-	{
-		swap(route, route2);
-		cost2 = calculateRoute(route2);
-
-		if (cost > cost2) {
-			for (int i = 0; i < number; i++)
-				route[i] = route2[i];
-			cost = cost2;
-			if (lowestCost > cost2)
-			{
-				lowestCost = cost;
-				for (int i = 0; i < number; i++)
-					bestRoute[i] = route[i];
-				cout << "		" << lowestCost << endl;
-			}
+		T = setT();
+		randomRoute();
+		for (int i = 0; i < number; i++) {
+			route2[i] = route[i];
 		}
-		else {
-			if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
+
+		lowestCost = cost = calculateRoute();
+		chrono::time_point<chrono::system_clock> start, end;
+		start = chrono::system_clock::now();
+		while (T > minT)
+		{
+			swap(route, route2);
+			cost2 = calculateRoute(route2);
+
+			if (cost > cost2) {
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
 				cost = cost2;
-
+				if (lowestCost > cost2)
+				{
+					lowestCost = cost;
+					for (int i = 0; i < number; i++)
+						bestRoute[i] = route[i];
+					cout << "		" << lowestCost << endl;
+				}
 			}
+			else {
+				if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
+					for (int i = 0; i < number; i++)
+						route[i] = route2[i];
+					cost = cost2;
+
+				}
+			}
+
+			cout << ": " << cost << endl;
+
+			T *= dT;
+		}
+		end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_seconds = end - start;
+		time = (double)elapsed_seconds.count();
+	
+	
+	
+	fstream fout;
+	fout.open(name + "res" + ".txt", ios::app);
+	fout << dT << "	" << lowestCost << "	" << time<< endl;
+	fout.close();
+
+	cout << "Najlepsza:" << lowestCost << endl;
+
+}
+void Data::search100(string name, double dT) {
+	int* route2 = new int[number];
+	double cost = 0;
+	double cost2 = 0;
+	double time[100] = { 0 };
+	double timeSum = 0;
+	double lowestCost[100] = {0};
+	double lowestCostSum = 0;
+	double T = 0;
+	double minT = 0.00001;
+
+	for (int rep = 0; rep < 100; rep++) {
+		T = setT();
+		randomRoute();
+		for (int i = 0; i < number; i++) {
+			route2[i] = route[i];
 		}
 
-		cout << ": " << cost << endl;
+		lowestCost[rep] = cost = calculateRoute();
+		chrono::time_point<chrono::system_clock> start, end;
+		start = chrono::system_clock::now();
+		while (T > minT)
+		{
+			swap(route, route2);
+			cost2 = calculateRoute(route2);
 
-		T *= dT;
+			if (cost > cost2) {
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+				if (lowestCost[rep] > cost2)
+				{
+					lowestCost[rep] = cost;
+					for (int i = 0; i < number; i++)
+						bestRoute[i] = route[i];
+					cout << "		" << lowestCost[rep] << endl;
+				}
+			}
+			else {
+				if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
+					for (int i = 0; i < number; i++)
+						route[i] = route2[i];
+					cost = cost2;
+
+				}
+			}
+
+			cout << ": " << cost << endl;
+
+			T *= dT;
+		}
+		end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_seconds = end - start;
+		time[rep] = (double)elapsed_seconds.count();
 	}
-	end = chrono::system_clock::now(); 
-	chrono::duration<double> elapsed_seconds = end - start;
-	time = (double)elapsed_seconds.count();
+	timeSum = 0;
+	lowestCostSum = 0;
+	for (int i = 0; i < 100; i++) {
+		timeSum += time[i];
+		lowestCostSum += lowestCost[i];
+	}
+	timeSum /= 100;
+	lowestCostSum /= 100;
 	fstream fout;
 	fout.open(name + "res"+".txt", ios::app);
-	fout << dT<<"	"<< cost <<"	"<< time <<endl;
+	fout << dT<<"	"<< lowestCostSum <<"	"<< timeSum <<endl;
 	fout.close();
 
 	cout << "asd" << lowestCost << endl;
