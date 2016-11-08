@@ -130,11 +130,6 @@ void Data::search() {
 
 	while(T > minT)
 	{
-		if (notImprovement > 200) {
-			randomRoute();
-			notImprovement = 0;
-			cost = calculateRoute(route);
-		}
 		swap(route, route2);
 		cost2 = calculateRoute(route2);
 
@@ -142,7 +137,6 @@ void Data::search() {
 			for (int i = 0; i < number; i++)
 				route[i] = route2[i];
 			cost = cost2;
-			notImprovement = 0;
 			if (lowestCost > cost2)
 			{
 				lowestCost = cost;
@@ -156,11 +150,10 @@ void Data::search() {
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
 				cost = cost2;
-				notImprovement = 0;
+
 			}
 		}
-		//cout <<i<<": "<< cost << endl;
-		notImprovement++;
+
 
 		T *= dT;
 	}
