@@ -32,7 +32,7 @@ Data::Data(string filename)
 			bestRoute[i] = i;
 			fin >> line[0] >> line[1] >> line[2];
 			city[i].put(line[1], line[2]);
-			//city[i].showData();
+			city[i].showData();
 		}
 	fin.close();
 }
@@ -112,7 +112,6 @@ void Data::swap(int* temp1, int* temp2)
 }
 
 void Data::search() {
-	int notImprovement = 0;
 	int* route2 = new int[number];
 	double cost = 0;
 	double cost2 = 0;
@@ -154,11 +153,73 @@ void Data::search() {
 			}
 		}
 
+		cout << ": " << cost << endl;
 
 		T *= dT;
 	}
 	cout <<"asd"<< lowestCost << endl;
 }
+
+void Data::search(string name,double dT) {
+	int* route2 = new int[number];
+	double cost = 0;
+	double cost2 = 0;
+	double time = 0;
+	double lowestCost = 0;
+	double T = 0;
+	T = setT();
+	double minT = 0.00001;
+	randomRoute();
+	for (int i = 0; i < number; i++) {
+		route2[i] = route[i];
+	}
+
+	lowestCost = cost = calculateRoute();
+	chrono::time_point<chrono::system_clock> start, end;
+	start = chrono::system_clock::now();
+	while (T > minT)
+	{
+		swap(route, route2);
+		cost2 = calculateRoute(route2);
+
+		if (cost > cost2) {
+			for (int i = 0; i < number; i++)
+				route[i] = route2[i];
+			cost = cost2;
+			if (lowestCost > cost2)
+			{
+				lowestCost = cost;
+				for (int i = 0; i < number; i++)
+					bestRoute[i] = route[i];
+				cout << "		" << lowestCost << endl;
+			}
+		}
+		else {
+			if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+
+			}
+		}
+
+		cout << ": " << cost << endl;
+
+		T *= dT;
+	}
+	end = chrono::system_clock::now(); 
+	chrono::duration<double> elapsed_seconds = end - start;
+	time = (double)elapsed_seconds.count();
+	fstream fout;
+	fout.open(name + "res"+".txt", ios::app);
+	fout << dT<<"	"<< cost <<"	"<< time <<endl;
+	fout.close();
+
+	cout << "asd" << lowestCost << endl;
+
+}
+
+
 double Data::loadBest(string filename) {
 	string temp;
 
@@ -206,6 +267,6 @@ double Data::setT() {
 			minCost = currentCost;
 	}
 	T = -(maxCost - minCost) / log(0.9);
-	cout <<"temp" <<T << endl;
+	cout <<"temp: " <<T << endl;
 	return T;
 }

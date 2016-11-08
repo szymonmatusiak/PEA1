@@ -8,45 +8,28 @@ using namespace std;
 
 void main(){
 	srand(time(NULL));
-	string fileName = "berlin52.tsp";
-	string fileNameOpt = "berlin52.opt.tour";
+	string fileName[3] = { "berlin52.tsp", "eil76.tsp", "ch130.tsp"};
+	string fileNameOpt[3] = { "berlin52.opt.tour", "gr24.opt.tour", "gr120.opt.tour" };
+	double dT[5]={0.9,0.95,0.99,0.999,0.9999};
+	int number = 2;
+	Data data0 = Data(fileName[0]);
+	Data data1 = Data(fileName[1]);
+	Data data2 = Data(fileName[2]);
 
-	Data data = Data(fileName);
-	data.search();
-	//data.randomRoute();
-	//data.loadBest(fileNameOpt);
-	//data.showData();
+	for (int i = 0; i < 5; i++) {
+		data0.search(fileName[0], dT[i]);
 	
-	//data.calculateRoute();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*string test;
-	float demention[52][3];
-	fstream fin;
-	fin.open("berlin52.tsp", ios::in);
-	while (!fin.eof()) {
-		fin >> test[0];
-		//cout << test[0];
-		if (test[0] == '1') {
-			demention[0][0] = 1;
-			fin >> demention[0][1] >> demention[0][2];
-			for (int i = 1; i < 52; i++) {
-				fin>> demention[i][0]>> demention[i][1]>> demention[i][2];
-			}
-			break;
-		}
 	}
-	fin.close();
-	for (int i = 0; i < 52; i++) {
-		cout << demention[i][0] << " " << demention[i][1] << " " << demention[i][2] << endl;
+	for (int i = 0; i < 5; i++) {
+		data1.search(fileName[1], dT[i]);
+
 	}
-	*/
+	for (int i = 0; i < 5; i++) {
+		data2.search(fileName[2], dT[i]);
+	}
+	data0.~Data();
+	data1.~Data();
+	data2.~Data();
+
 	system("pause");
 }

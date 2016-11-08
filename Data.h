@@ -3,6 +3,7 @@
 #include<string>
 #include<fstream>
 #include <cmath>
+#include<chrono>
 #define M_E        2.71828182845904523536
 #include "Point.h"
 using namespace std;
@@ -12,7 +13,7 @@ private:
 	int number;
 	Point* city;
 	int* route;
-	int* bestRoute; //nie jestem pewien
+	int* bestRoute;
 
 public:
 	Data();
@@ -20,9 +21,10 @@ public:
 	Data(string);
 	int getNumber();
 	void showData();
+	void search(string, double);
 	void randomRoute();
-	double calculateRoute();//przepisac
-	double calculateRoute(int*);//przepisac
+	double calculateRoute();
+	double calculateRoute(int*);
 
 	double calculateBestRoute();
 	void swap(int*, int*);
