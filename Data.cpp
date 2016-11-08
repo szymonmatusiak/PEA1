@@ -289,8 +289,8 @@ void Data::search100(string name, double dT) {
 	fout << dT<<"	"<< lowestCostSum <<"	"<< timeSum <<endl;
 	fout.close();
 
-	cout << "asd" << lowestCost << endl;
-
+	cout << "Srednia ze 100: " << lowestCostSum << endl;
+	system("pause");
 }
 
 

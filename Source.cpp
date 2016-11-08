@@ -26,7 +26,7 @@ void main(){
 	}
 	for (int i = 0; i < 5; i++) {
 		data2.search100(fileName[2], dT[i]);
-	}*/
+	}
 	data0.~Data();
 	data1.~Data();
 	data2.~Data();
