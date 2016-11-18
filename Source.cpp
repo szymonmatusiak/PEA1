@@ -13,9 +13,11 @@ void main(){
 	double dT[5]={0.9,0.95,0.99,0.999,0.9999};
 	int number = 2;
 	Data data0 = Data(fileName[0]);
-	Data data1 = Data(fileName[1]);
-	Data data2 = Data(fileName[2]);
+	//Data data1 = Data(fileName[1]);
+	//Data data2 = Data(fileName[2]);
+	data0.search(fileName[0], dT[0]);
 
+	/*
 	for (int i = 0; i < 5; i++) {
 		data0.search100(fileName[0], dT[i]);
 	
@@ -30,6 +32,6 @@ void main(){
 	data0.~Data();
 	data1.~Data();
 	data2.~Data();
-
+	*/
 	system("pause");
 }

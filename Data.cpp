@@ -5,6 +5,11 @@ Data::Data()
 	city = new Point[10];
 	route = new int[10];
 	number = 10;
+	*matrix = new float[number];
+	for (int i = 0; i < number; i++)
+	{
+		matrix[i] = new float[number];
+	}
 }
 
 Data::Data(string filename)
@@ -22,7 +27,11 @@ Data::Data(string filename)
 		city = new Point[number];
 		route = new int[number];
 		bestRoute = new int[number];
-
+		matrix = new float*[number];
+		for (int i = 0; i < number; i++)
+		{
+			matrix[i] = new float[number];
+		}
 		while (temp != "NODE_COORD_SECTION")
 		{
 			fin >> temp;
@@ -35,6 +44,17 @@ Data::Data(string filename)
 			city[i].showData();
 		}
 	fin.close();
+	for (int i = 0; i < number; i++)
+	{
+		for (int j = 0; j < number; j++) {
+			if(i!=j)
+				matrix[i][j] = sqrt(pow(city[i].getX() - city[j].getX(), 2) + pow(city[i].getY() - city[j].getY(), 2));
+			cout <<i<<":"<<j<<": "<< matrix[i][j]<<" ";
+		}
+		cout << endl;
+	}
+	system("pause");
+
 }
 Data::~Data()
 {
@@ -74,6 +94,10 @@ double Data::calculateRoute() {
 	float cost1 = 0;
 	for(int i=0;i<number;i++)
 	{ 
+		if (matrix != NULL) {
+			cost += matrix[i][(i + 1) % number];
+		}
+		else
 		cost += sqrt( pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
 		//cost1 += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
 		//cout<< i << ":" << cost << "	" << cost1 << endl;
@@ -88,7 +112,9 @@ double Data::calculateRoute(int* route) {
 	float cost1 = 0;
 	for (int i = 0; i<number; i++)
 	{
-		cost += sqrt(pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
+		cost += matrix[route[i]][route[(i + 1) % number]];
+
+		//cost += sqrt(pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
 
 	}
 	return cost;
@@ -246,7 +272,7 @@ void Data::search100(string name, double dT) {
 		{
 			swap(route, route2);
 			cost2 = calculateRoute(route2);
-
+			cout << "cost2" << cost2;
 			if (cost > cost2) {
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
@@ -331,10 +357,11 @@ double Data::setT() {
 
 	randomRoute();
 	maxCost = minCost = calculateRoute();
+	cout << maxCost;
 	for (int i = 0; i < number*number; i++) {
 
 		randomRoute();
-		currentCost = calculateRoute();
+		currentCost = calculateRoute(route);
 		if (currentCost > maxCost)
 			maxCost = currentCost;
 		else if(currentCost < minCost)

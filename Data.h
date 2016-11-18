@@ -14,6 +14,7 @@ private:
 	Point* city;
 	int* route;
 	int* bestRoute;
+	float** matrix;
 
 public:
 	Data();
