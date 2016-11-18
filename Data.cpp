@@ -16,9 +16,16 @@ Data::Data(string filename)
 {
 	string temp;
 	float line[3];
-
+	float *tempTab;
 	fstream fin;
 	fin.open(filename, ios::in);
+	while (temp != "TYPE:")
+	{
+		fin >> temp;
+	}
+	fin >> temp;
+	if(temp == "TSP")
+	{
 		while (temp != "DIMENSION:")
 		{
 			fin >> temp;
@@ -37,19 +44,61 @@ Data::Data(string filename)
 			fin >> temp;
 		}
 
-		for (int i = 0; i < number; i++) {
+		for (int i = 0; i < number; i++) 
+		{
 			bestRoute[i] = i;
 			fin >> line[0] >> line[1] >> line[2];
 			city[i].put(line[1], line[2]);
 			city[i].showData();
 		}
+	}
+	else if(temp == "ATSP")
+	{
+		cout << "atsp";
+		while (temp != "DIMENSION:")
+		{
+
+			cout << "atsp";
+			fin >> temp;
+		}
+		fin >> number;
+		cout << number;
+		city = new Point[number];
+		route = new int[number];
+		bestRoute = new int[number];
+		matrix = new float*[number];
+		tempTab = new float[number];
+		for (int i = 0; i < number; i++)
+		{
+			matrix[i] = new float[number];
+		}
+		while (temp != "EDGE_WEIGHT_SECTION")
+		{
+			cout << "test";
+			fin >> temp;
+		}
+
+		for (int i = 0; i < number; i++)
+		{
+			for (int j = 0; j < number; j++) {
+				fin >> tempTab[j];
+
+			}
+			for (int j = 0; j < number; j++) {
+				matrix[i][j] = tempTab[j];
+			}
+		}
+	}
 	fin.close();
+
+
+
 	for (int i = 0; i < number; i++)
 	{
 		for (int j = 0; j < number; j++) {
 			if(i!=j)
 				matrix[i][j] = sqrt(pow(city[i].getX() - city[j].getX(), 2) + pow(city[i].getY() - city[j].getY(), 2));
-			cout <<i<<":"<<j<<": "<< matrix[i][j]<<" ";
+			cout <<":"<<i<<":"<<j<<": "<< matrix[i][j]<<" ";
 		}
 		cout << endl;
 	}
