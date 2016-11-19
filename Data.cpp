@@ -51,14 +51,22 @@ Data::Data(string filename)
 			city[i].put(line[1], line[2]);
 			city[i].showData();
 		}
+		for (int i = 0; i < number; i++)
+		{
+			for (int j = 0; j < number; j++) {
+				if (i != j)
+					matrix[i][j] = sqrt(pow(city[i].getX() - city[j].getX(), 2) + pow(city[i].getY() - city[j].getY(), 2));
+				//	cout <<":"<<i<<":"<<j<<": "<< matrix[i][j]<<" ";
+			}
+			cout << endl;
+		}
 	}
 	else if(temp == "ATSP")
 	{
-		cout << "atsp";
 		while (temp != "DIMENSION:")
 		{
 
-			cout << "atsp";
+			
 			fin >> temp;
 		}
 		fin >> number;
@@ -82,6 +90,7 @@ Data::Data(string filename)
 		{
 			for (int j = 0; j < number; j++) {
 				fin >> tempTab[j];
+				cout << j << ": " << tempTab[j]<<" ";
 
 			}
 			for (int j = 0; j < number; j++) {
@@ -93,15 +102,7 @@ Data::Data(string filename)
 
 
 
-	for (int i = 0; i < number; i++)
-	{
-		for (int j = 0; j < number; j++) {
-			if(i!=j)
-				matrix[i][j] = sqrt(pow(city[i].getX() - city[j].getX(), 2) + pow(city[i].getY() - city[j].getY(), 2));
-			cout <<":"<<i<<":"<<j<<": "<< matrix[i][j]<<" ";
-		}
-		cout << endl;
-	}
+	
 	system("pause");
 
 }

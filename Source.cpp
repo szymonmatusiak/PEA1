@@ -17,7 +17,7 @@ void main(){
 	//Data data2 = Data(fileName[2]);
 	//data0.search(fileName[0], dT[0]);
 	Data data = Data("br17.atsp");
-	data.search("br17.atsp", dT[0]);
+	data.search("br17.atsp", dT[4]);
 	/*
 	for (int i = 0; i < 5; i++) {
 		data0.search100(fileName[0], dT[i]);
