@@ -26,6 +26,7 @@ Data::Data(string filename)
 	fin >> temp;
 	if(temp == "TSP")
 	{
+		cout << filename;
 		while (temp != "DIMENSION:")
 		{
 			fin >> temp;
@@ -63,6 +64,7 @@ Data::Data(string filename)
 	}
 	else if(temp == "ATSP")
 	{
+		cout << "atsp"<< filename;
 		while (temp != "DIMENSION:")
 		{
 
@@ -82,7 +84,6 @@ Data::Data(string filename)
 		}
 		while (temp != "EDGE_WEIGHT_SECTION")
 		{
-			cout << "test";
 			fin >> temp;
 		}
 
@@ -99,11 +100,6 @@ Data::Data(string filename)
 		}
 	}
 	fin.close();
-
-
-
-	
-	system("pause");
 
 }
 Data::~Data()
@@ -149,10 +145,6 @@ double Data::calculateRoute() {
 		}
 		else
 		cost += sqrt( pow(city[route[i]].getX() - city[(route[(i + 1) % number])].getX(), 2) + pow(city[route[i]].getY() - city[(route[(i + 1) % number])].getY(), 2));
-		//cost1 += sqrt(pow(city[i].getX() - city[(i + 1) % number].getX(), 2) + pow(city[i].getY() - city[(i + 1) % number].getY(), 2));
-		//cout<< i << ":" << cost << "	" << cost1 << endl;
-		//cout << i << ":" << (i + 1) % number << "	" << (route[(i + 1) % number]) << endl;
-
 	}
 	return cost;
 }
@@ -233,7 +225,7 @@ void Data::search() {
 
 		T *= dT;
 	}
-	cout <<"asd"<< lowestCost << endl;
+	cout <<"lowestCost"<< lowestCost << endl;
 }
 void Data::search(string name, double dT) {
 	int* route2 = new int[number];
