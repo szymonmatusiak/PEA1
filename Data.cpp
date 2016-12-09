@@ -361,6 +361,113 @@ void Data::search100(string name, double dT) {
 	system("pause");
 }
 
+void Data::tabuSearch(string name)
+{
+	int noImprovment = 0;
+	int* route2 = new int[number];
+	int** tabu = new int*[number];
+	for (int i = 0; i < number; i++) {
+		tabu[i] = new int[number];
+	}
+
+	double cost = 0;
+	double cost2 = 0;
+
+	double time[100] = { 0 };
+	double timeSum = 0;
+	double lowestCost[100] = { 0 };
+	double lowestCostSum = 0;
+	
+	
+	
+	for (int rep = 0; rep < 100; rep++) {
+		randomRoute();
+		for (int i = 0; i < number; i++) {
+			route2[i] = route[i];
+		}
+
+		lowestCost[rep] = cost = calculateRoute();
+		chrono::time_point<chrono::system_clock> start, end;
+		start = chrono::system_clock::now();
+
+
+
+
+		/*
+		while (T > minT)
+		{
+			swap(route, route2);
+			cost2 = calculateRoute(route2);
+			cout << "cost2" << cost2;
+			if (cost > cost2) {
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+				if (lowestCost[rep] > cost2)
+				{
+					lowestCost[rep] = cost;
+					for (int i = 0; i < number; i++)
+						bestRoute[i] = route[i];
+					cout << "		" << lowestCost[rep] << endl;
+				}
+			}
+			else {
+				if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
+					for (int i = 0; i < number; i++)
+						route[i] = route2[i];
+					cost = cost2;
+
+				}
+			}
+
+			cout << ": " << cost << endl;
+
+			T *= dT;
+		}
+		*/
+		while (noImprovment)
+		{
+			swap(route, route2);
+			cost2 = calculateRoute(route2);
+
+			if (cost > cost2) 
+			{
+				noImprovment++;
+			}
+			else 
+			{
+				noImprovment = 0;
+			}
+		}
+
+
+
+		end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_seconds = end - start;
+		time[rep] = (double)elapsed_seconds.count();
+	}
+
+
+	timeSum = 0;
+	lowestCostSum = 0;
+	for (int i = 0; i < 100; i++) {
+		timeSum += time[i];
+		lowestCostSum += lowestCost[i];
+	}
+	timeSum /= 100;
+	lowestCostSum /= 100;
+
+
+
+
+	fstream fout;
+	fout.open(name + "res" + ".txt", ios::app);
+	fout << "	" << lowestCostSum << "	" << timeSum << endl;
+	fout.close();
+
+	cout << "Srednia ze 100: " << lowestCostSum << endl;
+	system("pause");
+}
 
 double Data::loadBest(string filename) {
 	string temp;

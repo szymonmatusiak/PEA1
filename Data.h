@@ -24,6 +24,9 @@ public:
 	void showData();
 	void search(string, double);
 	void search100(string, double);
+	void tabuSearch(string);
+
+
 
 	void randomRoute();
 	double calculateRoute();
