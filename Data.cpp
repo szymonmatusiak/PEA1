@@ -419,24 +419,22 @@ void Data::tabuSearch(string name)
 
 				}
 			}
-
-			cout << ": " << cost << endl;
-
-			T *= dT;
 		}
 		*/
 		while (noImprovment)
 		{
 			swap(route, route2);
 			cost2 = calculateRoute(route2);
-
 			if (cost > cost2) 
 			{
-				noImprovment++;
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+				noImprovment = 0;
 			}
 			else 
 			{
-				noImprovment = 0;
+				noImprovment++;
 			}
 		}
 
