@@ -178,6 +178,52 @@ void Data::swap(int* temp1, int* temp2)
 	temp2[a] = temp1[b];
 	temp2[b] = temp1[a];
 }
+void Data::swap(int* temp1, int* temp2, int** tabu)
+{
+	int a = 1, b = 1;
+	int numberOfIteration = number*number - number;
+	a = (int)rand() % (number);
+	b = (int)rand() % (number);
+	while ((a == b) || (tabu[a][b]))
+	{
+		a = (int)rand() % (number);
+		b = (int)rand() % (number);
+	}
+ 	tabu[a][b] = numberOfIteration;
+	
+	for (int i = 0; i < number; i++)
+		temp2[i] = temp1[i];
+
+	temp2[a] = temp1[b];
+	temp2[b] = temp1[a];
+	
+}
+void Data::tabuListDecrease( int** tabu)
+{
+	for (int i = 0; i < number; i++) 
+	{
+		for (int j = 0; j < number; j++) 
+		{
+			if(tabu[i][j]!=0)
+			{
+				tabu[i][j] -= 1;
+			}
+		}
+	}
+}
+void Data::tabuShow(int **tabu) {
+	cout << endl;
+	for (int i = 0; i < number; i++)
+	{
+		for (int j = 0; j < number; j++)
+		{
+			cout.width(3);
+			cout << tabu[i][j];
+		}
+		cout << endl;
+	}
+}
+
 
 void Data::search() {
 	int* route2 = new int[number];
@@ -369,7 +415,11 @@ void Data::tabuSearch(string name)
 	for (int i = 0; i < number; i++) {
 		tabu[i] = new int[number];
 	}
-
+	for (int i = 0; i < number; i++) {
+		for (int j = 0; j < number; j++) {
+			tabu[i][j] = 0;
+		}
+	}
 	double cost = 0;
 	double cost2 = 0;
 
@@ -385,57 +435,43 @@ void Data::tabuSearch(string name)
 		for (int i = 0; i < number; i++) {
 			route2[i] = route[i];
 		}
-
 		lowestCost[rep] = cost = calculateRoute();
+		//cout << "koszt" << cost;
+		//system("pause");
 		chrono::time_point<chrono::system_clock> start, end;
 		start = chrono::system_clock::now();
 
 
 
-
-		/*
-		while (T > minT)
+		while (noImprovment != 100)
 		{
-			swap(route, route2);
+			swap(route, route2, tabu);
+			
 			cost2 = calculateRoute(route2);
-			cout << "cost2" << cost2;
-			if (cost > cost2) {
-				for (int i = 0; i < number; i++)
-					route[i] = route2[i];
-				cost = cost2;
-				if (lowestCost[rep] > cost2)
-				{
-					lowestCost[rep] = cost;
-					for (int i = 0; i < number; i++)
-						bestRoute[i] = route[i];
-					cout << "		" << lowestCost[rep] << endl;
-				}
-			}
-			else {
-				if ((double)rand() / RAND_MAX < exp((cost - cost2) / T)) {
-					for (int i = 0; i < number; i++)
-						route[i] = route2[i];
-					cost = cost2;
-
-				}
-			}
-		}
-		*/
-		while (noImprovment)
-		{
-			swap(route, route2);
-			cost2 = calculateRoute(route2);
+			cout <<"cost1: "<< cost <<" cost2: "<< cost2 << endl;
 			if (cost > cost2) 
 			{
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
 				cost = cost2;
 				noImprovment = 0;
+
+				if (lowestCost[rep]  > cost2)
+				{
+					lowestCost[rep] = cost;
+					for (int i = 0; i < number; i++)
+						bestRoute[i] = route[i];
+					cout << "		"<< lowestCost << endl;
+				}
 			}
+
 			else 
 			{
 				noImprovment++;
 			}
+			tabuListDecrease(tabu);
+			tabuShow(tabu);
+			system("pause");
 		}
 
 

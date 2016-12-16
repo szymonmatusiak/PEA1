@@ -34,8 +34,12 @@ public:
 
 	double calculateBestRoute();
 	void swap(int*, int*);
-	void search();
+	void swap(int*, int*, int**);
 
+	void tabuListDecrease(int **);
+	void tabuShow(int **);
+
+	void search();
 	double loadBest(string);
 
 	double setT();
