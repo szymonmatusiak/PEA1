@@ -1,4 +1,6 @@
 #include "Data.h"
+#include <algorithm>
+
 //domyœlny tylko do testów
 Data::Data()
 {
@@ -26,7 +28,7 @@ Data::Data(string filename)
 	fin >> temp;
 	if(temp == "TSP")
 	{
-		cout << filename;
+		//cout << filename;
 		while (temp != "DIMENSION:")
 		{
 			fin >> temp;
@@ -50,7 +52,7 @@ Data::Data(string filename)
 			bestRoute[i] = i;
 			fin >> line[0] >> line[1] >> line[2];
 			city[i].put(line[1], line[2]);
-			city[i].showData();
+			//city[i].showData();
 		}
 		for (int i = 0; i < number; i++)
 		{
@@ -64,7 +66,7 @@ Data::Data(string filename)
 	}
 	else if(temp == "ATSP")
 	{
-		cout << "atsp"<< filename;
+		//cout << "atsp"<< filename;
 		while (temp != "DIMENSION:")
 		{
 
@@ -91,7 +93,7 @@ Data::Data(string filename)
 		{
 			for (int j = 0; j < number; j++) {
 				fin >> tempTab[j];
-				cout << j << ": " << tempTab[j]<<" ";
+				//cout << j << ": " << tempTab[j]<<" ";
 
 			}
 			for (int j = 0; j < number; j++) {
@@ -131,7 +133,25 @@ void Data::randomRoute()
 			route[i] = (int)rand() % number;
 		}
 		table[route[i]] = 1;
-		//cout << route[i] << endl;
+		cout << route[i] << endl;
+	}
+}
+
+void Data::randomRoute(int *route2)
+{
+	bool* table;
+	table = new bool[number];
+	fill_n(table, number, 0);
+
+	for (int i = 0; i < number; i++)
+	{
+		route2[i] = (int)rand() % number;
+		while (table[route2[i]])
+		{
+			route2[i] = (int)rand() % number;
+		}
+		table[route2[i]] = 1;
+		//cout << route2[i] << endl;
 	}
 }
 
@@ -178,18 +198,28 @@ void Data::swap(int* temp1, int* temp2)
 	temp2[a] = temp1[b];
 	temp2[b] = temp1[a];
 }
-void Data::swap(int* temp1, int* temp2, int** tabu)
+void Data::swap(int* temp1, int* temp2, int** tabu, int cadence)
 {
 	int a = 1, b = 1;
-	int numberOfIteration = number*number - number;
+	int cost1 = 0;
+	int cost2 = 0;
 	a = (int)rand() % (number);
 	b = (int)rand() % (number);
-	while ((a == b) || (tabu[a][b]))
+	while (a == b)
 	{
 		a = (int)rand() % (number);
 		b = (int)rand() % (number);
+		if (tabu[a][b]) 
+		{
+			cost1 = calculateRoute(temp1);
+			cost2 = calculateRoute(temp2);
+			if (cost2 - cost1 > cost1 * 0.03)
+			{
+				break;
+			}
+		}
 	}
- 	tabu[a][b] = numberOfIteration;
+ 	tabu[a][b] = cadence;
 	
 	for (int i = 0; i < number; i++)
 		temp2[i] = temp1[i];
@@ -407,9 +437,103 @@ void Data::search100(string name, double dT) {
 	system("pause");
 }
 
+
+
+void Data::tabuSearch(string name, int cadence) {
+	double cost = 0;
+	double cost2 = 0;
+	double lowestcost = 0;
+	int round = 0;
+	double time[100] = { 0 };
+	double timeSum = 0;
+	double lowestCost[100] = { 0 };
+	double lowestCostSum = 0;
+	int notImproved = 0;
+
+
+	int* route2 = new int[number];
+	int** tabu = new int*[number];
+	allocateTabu(tabu);
+	tabuFill(tabu); 
+
+	randomRoute(route);
+	cost = calculateRoute();
+	lowestcost = cost;
+	//cout << "lowestcost" << cost;
+	for (int rep = 0; rep < 100; rep++) {
+		chrono::time_point<chrono::system_clock> start, end;
+		start = chrono::system_clock::now();
+		for (int i = 0; i < number; i++) {
+			route2[i] = route[i];
+		}
+		while (round != 20000)
+		{
+			round++;
+			swap(route, route2, tabu, cadence);
+			//tabuShow(tabu);
+			tabuListDecrease(tabu);
+			cost = calculateRoute(route);
+			cost2 = calculateRoute(route2);
+			if (cost > cost2)
+			{
+				for (int i = 0; i < number; i++)
+					route[i] = route2[i];
+				cost = cost2;
+				cout << cost << " " << round << endl;
+				notImproved = 0;
+			}
+			else notImproved++;
+			if (notImproved > number*number)
+				randomRoute();
+			//cout << round << endl;
+
+		}
+		lowestCost[rep] = cost;
+		end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_seconds = end - start;
+		time[rep] = (double)elapsed_seconds.count();
+	}
+	timeSum = 0;
+	lowestCostSum = 0;
+	for (int i = 0; i < 100; i++) {
+		timeSum += time[i];
+		lowestCostSum += lowestCost[i];
+	}
+	timeSum /= 100;
+	lowestCostSum /= 100;
+
+
+
+
+	fstream fout;
+	fout.open(name + "res" + ".txt", ios::app);
+	fout << "FTabu	"<< cadence <<"	"<< lowestCostSum << "	" << timeSum << endl;
+	fout.close();
+
+	cout << "Srednia ze 100: " << lowestCostSum << endl;
+	//cout << "best" << cost << endl;
+}
+void Data::allocateTabu(int ** tabu)
+{
+	for (int i = 0; i < number; i++) {
+		tabu[i] = new int[number];
+	}
+}
+void Data::tabuFill(int ** tabu)
+{
+	for (int i = 0; i < number; i++) {
+		for (int j = 0; j < number; j++) {
+			tabu[i][j] = 0;
+		}
+	}
+}
 void Data::tabuSearch(string name)
 {
+
+	double kadencja[4] = { 10, sqrt(number), number, (number*number) / 3 };
 	int noImprovment = 0;
+	int newRandom=0;
+	int test = 0;
 	int* route2 = new int[number];
 	int** tabu = new int*[number];
 	for (int i = 0; i < number; i++) {
@@ -431,26 +555,28 @@ void Data::tabuSearch(string name)
 	
 	
 	for (int rep = 0; rep < 100; rep++) {
-		randomRoute();
+		randomRoute(route);
+		randomRoute(route2);
 		for (int i = 0; i < number; i++) {
 			route2[i] = route[i];
 		}
-		lowestCost[rep] = cost = calculateRoute();
-		//cout << "koszt" << cost;
-		//system("pause");
+		if(lowestCost[rep] == 0)lowestCost[rep] = cost = calculateRoute();
+
 		chrono::time_point<chrono::system_clock> start, end;
 		start = chrono::system_clock::now();
 
 
 
-		while (noImprovment != 100)
+		while (noImprovment != 1000)
 		{
-			swap(route, route2, tabu);
+			swap(route, route2, tabu, kadencja[3]);
 			
 			cost2 = calculateRoute(route2);
-			cout <<"cost1: "<< cost <<" cost2: "<< cost2 << endl;
+			cout << cost2;
 			if (cost > cost2) 
 			{
+				cout << "tetetetetetetee";
+				system("pause");
 				for (int i = 0; i < number; i++)
 					route[i] = route2[i];
 				cost = cost2;
@@ -469,9 +595,15 @@ void Data::tabuSearch(string name)
 			{
 				noImprovment++;
 			}
+			if (noImprovment == 100) {
+				randomRoute();
+				newRandom++;
+				if (newRandom < 100) {
+					noImprovment = 0;
+				}
+			}
 			tabuListDecrease(tabu);
-			tabuShow(tabu);
-			system("pause");
+			//tabuShow(tabu);
 		}
 
 
@@ -496,7 +628,7 @@ void Data::tabuSearch(string name)
 
 	fstream fout;
 	fout.open(name + "res" + ".txt", ios::app);
-	fout << "	" << lowestCostSum << "	" << timeSum << endl;
+	fout << "tabu	" << lowestCostSum << "	" << timeSum << endl;
 	fout.close();
 
 	cout << "Srednia ze 100: " << lowestCostSum << endl;
@@ -553,4 +685,212 @@ double Data::setT() {
 	T = -(maxCost - minCost) / log(0.9);
 	cout <<"temp: " <<T << endl;
 	return T;
+}
+
+void Data::GA(int populationSize, int stagnationLimit, float mutationProbability, float crossoverProbability) {
+	int stagnation = 0;
+	int bestFitness = -1;
+	int newFitness =0;
+	int fitnessVariable = 0;
+	int **population = new int*[populationSize];
+	int **nextPopulation = new int*[populationSize];
+
+	for (auto i = 0; i < populationSize; ++i) {
+		population[i] = new int[number];
+		nextPopulation[i] = new int[number];
+		randomRoute(nextPopulation[i]);
+		//cout <<i<< ": "<< calculateRoute(nextPopulation[i]) << endl;
+	}
+
+	for (int i = 0; i < number; i++)
+	{
+		for (int j = 0; j < number; j++) {
+			if (fitnessVariable < matrix[i][j])
+				fitnessVariable = matrix[i][j];
+		}
+	}
+	fitnessVariable *= number;
+	cout <<"testy"<< fitnessVariable << endl;
+
+
+	while (stagnation < stagnationLimit) {
+		auto temp = population;
+		population = nextPopulation;
+		nextPopulation = temp;
+		newFitness = evolve(population, nextPopulation, populationSize, fitnessVariable, crossoverProbability, mutationProbability);
+		if (newFitness > bestFitness)
+		{
+			bestFitness = newFitness;
+			stagnation = 0;
+			continue;
+		}
+		++stagnation;
+		//cout <<"bestFitness"<< bestFitness << endl;
+
+	}
+	cout <<"koszt" <<fitnessVariable -bestFitness<<endl;
+	system("pause");
+
+	for (auto i = 0; i < populationSize; ++i)
+	{
+		delete population[i];
+		delete nextPopulation[i];
+	}
+	delete[] population;
+	delete[] nextPopulation;
+	
+}
+int Data::evolve(int **population, int **nextPopulation, int populationSize,int fitnessVariable, float crossoverProbability, float mutationProbability) {
+	int elite = 0;
+	int *fitness = new int[populationSize];
+	int *bigfitness = new int[populationSize * 2];
+	int **bigpopulation = new int*[populationSize * 2];
+
+	for (int i = 0; i < populationSize; i++) {
+		fitness[i] = getFitness(population[i], fitnessVariable);
+	}
+
+
+	int childrenCount = 0;
+	for (int i = 0; i < number; i++)
+	{
+		nextPopulation[0][i] = bestRoute[i];
+	}
+	childrenCount++;
+
+	while (childrenCount < populationSize)
+	{
+		int *parentA, *parentB, *child;
+		child = new int[number];
+		parentA = RandomSelection(fitness, population, populationSize);
+		parentB = RandomSelection(fitness, population, populationSize);
+
+		Cross(parentA, parentB, child, crossoverProbability);
+		Mutate(child, mutationProbability);
+		for (int i = 0; i < number; i++)
+		{
+			nextPopulation[childrenCount][i] = child[i];
+		}
+
+		delete child;
+		childrenCount++;
+	}
+
+	for (int i = 0; i < populationSize; i++) {
+		fitness[i] = getFitness(nextPopulation[i], fitnessVariable);
+		if (elite < fitness[i]) elite = fitness[i];
+		//cout << i<<": " << fitness[i]<<endl;
+	}
+
+	delete[] fitness;
+	return elite;
+}
+
+
+int Data::getFitness(int *temp, int fitnessVariable) {
+	int fitness = fitnessVariable - calculateRoute(temp);
+	return fitness;
+}
+int* Data::RandomSelection(int *fitness, int **population,int populationSize) const
+{
+	int totalFitness = 0;
+	for (auto i = 0; i < populationSize; i++)
+	{
+		//cout <<"fitness"<< fitness[i]<<endl;
+		totalFitness += fitness[i];
+	}
+	int stopAt = abs((rand()* rand()* rand()) % totalFitness);
+	
+	totalFitness = 0;
+	for (auto i = 0; i < populationSize; i++)
+	{
+		totalFitness += fitness[i];
+		if (totalFitness >= stopAt)
+		{
+			//cout << "r: " << i << endl;
+			return population[i];
+		}
+	}
+	return nullptr;
+}
+bool Data::Equals(int *parentA, int *parentB) {
+
+	return false;
+}
+void Data::Cross(const int *parentA, const int *parentB, int *child, float crossoverProbability)
+{
+	if (rand() / static_cast<double>(RAND_MAX) > crossoverProbability)
+	{
+		for (auto i = 0; i < number; i++)
+			child[i] = parentA[i];
+			return;
+	}
+	int crossing = rand() % number;
+
+	for (auto i = 0; i < number; i++)
+		child[i] = parentB[i];
+
+	auto citiesFromParentA = 0;
+	for (auto i = 0; i < number; ++i)
+	{
+		auto found = false;
+		for (auto j = 0; j <= crossing; ++j)
+		{
+			if (child[j] == parentA[i])
+			{
+				found = true;
+				break;
+			}
+		}
+		if (found) continue;
+		++citiesFromParentA;
+		child[crossing + citiesFromParentA] = parentA[i];
+	}
+}
+void Data::Mutate(int *t,float mutationProbability)
+{
+	if (rand() / static_cast<double>(RAND_MAX) > mutationProbability)
+		return;
+	int a = rand() % number;
+	int b = a;
+	while (a == b)
+		b = rand() % number;
+	if (a > b) {
+		int buf = a;
+		a = b;
+		b = buf;
+	}
+
+	int invertRange = b - a + 1;
+	int *invertBuf= new int[invertRange];
+
+	for (int i = 0; i < invertRange; ++i)
+		invertBuf[i] = t[b - i];
+	for (int i = 0; i < invertRange; ++i)
+		t[a + i] = invertBuf[i];
+	/*
+	int temp;
+	if ( rand() / static_cast<double>(RAND_MAX) > mutationProbability)
+		return;
+
+	int a = 1, b = 1;
+
+	while (a == b)
+	{
+		a = (int)rand() % (number - 1) + 1;
+		b = (int)rand() % (number - 1) + 1;
+	}
+	temp = t[a];
+	t[a] = t[b];
+	t[b] = temp;
+	*/
+}
+bool Data::Exists(int *child, int **population, size_t childrenCount)
+{
+	for (size_t i = 0; i < childrenCount; ++i)
+	{
+		if (Equals(child,population[i]))
+			return true;
+	}
+	return false;
 }

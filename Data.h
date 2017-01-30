@@ -15,6 +15,7 @@ private:
 	int* route;
 	int* bestRoute;
 	float** matrix;
+	
 
 public:
 	Data();
@@ -24,17 +25,22 @@ public:
 	void showData();
 	void search(string, double);
 	void search100(string, double);
+	void tabuSearch(string name, int cadence);
+	void allocateTabu(int ** tabu);
+	void tabuFill(int ** tabu);
 	void tabuSearch(string);
 
 
 
 	void randomRoute();
+	void randomRoute(int*);
+
 	double calculateRoute();
 	double calculateRoute(int*);
 
 	double calculateBestRoute();
 	void swap(int*, int*);
-	void swap(int*, int*, int**);
+	void swap(int*, int*, int**, int);
 
 	void tabuListDecrease(int **);
 	void tabuShow(int **);
@@ -43,5 +49,13 @@ public:
 	double loadBest(string);
 
 	double setT();
+	void GA(int , int , float , float );
+	int evolve(int**, int**, int, int,float , float);
+	int getFitness(int*,int);
+	int * RandomSelection(int * fitness, int ** population, int populationSize) const;
+	void Cross(const int * parentA, const int * parentB, int * child, float);
+	void Mutate(int * t, float);
+	bool Exists(int * child, int ** population, size_t childrenCount);
+	bool Equals(int *parentA, int *parentB);
 };
 
