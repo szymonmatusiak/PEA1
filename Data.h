@@ -49,13 +49,15 @@ public:
 	double loadBest(string);
 
 	double setT();
-	void GA(int , int , float , float );
-	int evolve(int**, int**, int, int,float , float);
+	void TestGA(string name, int populationSize, int stagnationLimit, float mutationProbability, float crossoverProbability);
+	int GA(int , int , float , float );
+	int evolve(int**, int, int,float , float);
 	int getFitness(int*,int);
 	int * RandomSelection(int * fitness, int ** population, int populationSize) const;
 	void Cross(const int * parentA, const int * parentB, int * child, float);
 	void Mutate(int * t, float);
 	bool Exists(int * child, int ** population, size_t childrenCount);
+	void quicksort(int * bigfitness, int ** population, int left, int right);
 	bool Equals(int *parentA, int *parentB);
 };
 

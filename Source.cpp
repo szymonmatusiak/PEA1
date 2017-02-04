@@ -97,8 +97,219 @@ void main(){
 		break;
 
 	case 4:
-		data0.GA(100, 100, 0.7, 0.01);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.1);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.2);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.3);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.4);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.5);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.7);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.8);
+		data0.TestGA(fileName[0], 100, 1000, 0, 0.9);
+		data0.TestGA(fileName[0], 100, 1000, 0, 1);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.1);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.2);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.3);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.4);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.5);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.7);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.8);
+		data1.TestGA(fileName[1], 100, 1000, 0, 0.9);
+		data1.TestGA(fileName[1], 100, 1000, 0, 1);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.1);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.2);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.3);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.4);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.5);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.7);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.8);
+		data2.TestGA(fileName[2], 100, 1000, 0, 0.9);
+		data2.TestGA(fileName[2], 100, 1000, 0, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.2);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.3);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.4);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.5);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.7);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.8);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 0.9);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.2);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.3);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.4);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.5);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.7);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.8);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.9);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.2);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.3);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.4);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.5);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.7);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.8);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 0.9);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0, 1);
+		break;
 
+	case 5:
+		data0.TestGA(fileName[0], 100, 1000, 0.01, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.03, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.05, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.07, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.09, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.11, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.13, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.15, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.17, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.19, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.01, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.03, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.05, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.07, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.09, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.11, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.13, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.15, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.17, 0.6);
+		data1.TestGA(fileName[1], 100, 1000, 0.19, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.01, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.03, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.05, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.07, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.09, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.11, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.13, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.15, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.17, 0.6);
+		data2.TestGA(fileName[2], 100, 1000, 0.19, 0.6);
+
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.01, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.03, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.05, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.07, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.09, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.11, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.13, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.15, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.17, 0.6);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.19, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.01, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.03, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.05, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.07, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.09, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.11, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.13, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.15, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.17, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.19, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.01, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.03, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.05, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.07, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.09, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.11, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.13, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.15, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.17, 0.6);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.19, 0.6);
+
+		break;
+
+	case 6:
+
+		data0.TestGA(fileName[0], 100, 1000, 0.01, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.03, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.05, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.07, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.09, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.11, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.13, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.2, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.3, 0.6);
+		data0.TestGA(fileName[0], 100, 1000, 0.4, 0.6);
+
+		break;
+	case 7:
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.2);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.3);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.4);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.5);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.7);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.8);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 0.9);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0, 1);
+
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.01, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.03, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.05, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.07, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.09, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.11, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.13, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.15, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.17, 0.6);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.19, 0.6);
+
+		break;
+	case 8:
+
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.01, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.03, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.05, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.07, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.09, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.11, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.13, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.15, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.17, 1);
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.19, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.01, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.03, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.05, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.07, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.09, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.11, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.13, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.15, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.17, 1);
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.19, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.01, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.03, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.05, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.07, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.09, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.11, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.13, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.15, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.17, 1);
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.19, 1);
+
+		break;
+	case 9:
+		
+		data0.TestGA(fileName[0], 100, 1000, 0.1, 0.6);
+		/*
+		data1.TestGA(fileName[1], 100, 1000, 0.1, 0.6);
+
+		data2.TestGA(fileName[2], 100, 1000, 0.1, 0.6);
+
+		data3.TestGA(fileNameAsync[0], 100, 1000, 0.1, 0.6);
+		
+		data4.TestGA(fileNameAsync[1], 100, 1000, 0.1, 0.6);
+		
+		data5.TestGA(fileNameAsync[2], 100, 1000, 0.1, 0.6);
+		*/
 		break;
 	default:
 		break;

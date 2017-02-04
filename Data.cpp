@@ -687,20 +687,46 @@ double Data::setT() {
 	return T;
 }
 
-void Data::GA(int populationSize, int stagnationLimit, float mutationProbability, float crossoverProbability) {
+void Data::TestGA(string name, int populationSize, int stagnationLimit, float mutationProbability, float crossoverProbability) {
+	double time[100] = { 0 };
+	double timeSum = 0;
+	double lowestCost[100] = { 0 };
+	double lowestCostSum = 0; 
+	
+	for (int rep = 0; rep < 10; rep++) {
+		chrono::time_point<chrono::system_clock> start, end;
+		start = chrono::system_clock::now();
+
+		lowestCost[rep] = this->GA(populationSize, stagnationLimit, mutationProbability, crossoverProbability);
+
+		end = chrono::system_clock::now();
+		chrono::duration<double> elapsed_seconds = end - start;
+		time[rep] = (double)elapsed_seconds.count();
+	}
+	timeSum = 0;
+	lowestCostSum = 0;
+	for (int i = 0; i < 10; i++) {
+		timeSum += time[i];
+		lowestCostSum += lowestCost[i];
+	}
+	timeSum /= 10;
+	lowestCostSum /= 10;
+	fstream fout;
+	fout.open(name + "res" + ".txt", ios::app);
+	fout << crossoverProbability << "	" << mutationProbability << "	" << lowestCostSum << "	" << timeSum << endl;
+	fout.close();
+
+	cout << "Srednia ze 100: " << lowestCostSum << endl;
+}
+
+int Data::GA(int populationSize, int stagnationLimit, float mutationProbability, float crossoverProbability) {
 	int stagnation = 0;
 	int bestFitness = -1;
 	int newFitness =0;
 	int fitnessVariable = 0;
-	int **population = new int*[populationSize];
-	int **nextPopulation = new int*[populationSize];
-
-	for (auto i = 0; i < populationSize; ++i) {
-		population[i] = new int[number];
-		nextPopulation[i] = new int[number];
-		randomRoute(nextPopulation[i]);
-		//cout <<i<< ": "<< calculateRoute(nextPopulation[i]) << endl;
-	}
+	int bigPopulation = populationSize * 2;
+	int **population = new int*[bigPopulation];
+	int *fitness = new int[bigPopulation];
 
 	for (int i = 0; i < number; i++)
 	{
@@ -709,15 +735,21 @@ void Data::GA(int populationSize, int stagnationLimit, float mutationProbability
 				fitnessVariable = matrix[i][j];
 		}
 	}
+	if (fitnessVariable > (INT_MAX) / number)fitnessVariable /= 4;
 	fitnessVariable *= number;
-	cout <<"testy"<< fitnessVariable << endl;
+	cout << "testy" << fitnessVariable << endl;
+	//system("pause");
+	for (auto i = 0; i < bigPopulation; i++) 
+	{
+		population[i] = new int[number];
 
+		randomRoute(population[i]);
+		fitness[i] = getFitness(population[i], fitnessVariable);
+	}
+	
 
 	while (stagnation < stagnationLimit) {
-		auto temp = population;
-		population = nextPopulation;
-		nextPopulation = temp;
-		newFitness = evolve(population, nextPopulation, populationSize, fitnessVariable, crossoverProbability, mutationProbability);
+		newFitness = evolve(population, bigPopulation, fitnessVariable, crossoverProbability, mutationProbability);  
 		if (newFitness > bestFitness)
 		{
 			bestFitness = newFitness;
@@ -725,39 +757,26 @@ void Data::GA(int populationSize, int stagnationLimit, float mutationProbability
 			continue;
 		}
 		++stagnation;
-		//cout <<"bestFitness"<< bestFitness << endl;
 
 	}
-	cout <<"koszt" <<fitnessVariable -bestFitness<<endl;
-	system("pause");
-
+	
 	for (auto i = 0; i < populationSize; ++i)
 	{
-		delete population[i];
-		delete nextPopulation[i];
+		delete[] population[i];
 	}
+	population = nullptr;
 	delete[] population;
-	delete[] nextPopulation;
-	
+	return fitnessVariable - bestFitness;
 }
-int Data::evolve(int **population, int **nextPopulation, int populationSize,int fitnessVariable, float crossoverProbability, float mutationProbability) {
+int Data::evolve(int **population, int bigPopulation,int fitnessVariable, float crossoverProbability, float mutationProbability) {
 	int elite = 0;
-	int *fitness = new int[populationSize];
-	int *bigfitness = new int[populationSize * 2];
-	int **bigpopulation = new int*[populationSize * 2];
-
-	for (int i = 0; i < populationSize; i++) {
+	int populationSize = bigPopulation / 2;
+	int *fitness = new int[bigPopulation];
+	for (int i = 0; i < bigPopulation; i++)
+	{
 		fitness[i] = getFitness(population[i], fitnessVariable);
 	}
-
-
 	int childrenCount = 0;
-	for (int i = 0; i < number; i++)
-	{
-		nextPopulation[0][i] = bestRoute[i];
-	}
-	childrenCount++;
-
 	while (childrenCount < populationSize)
 	{
 		int *parentA, *parentB, *child;
@@ -769,26 +788,33 @@ int Data::evolve(int **population, int **nextPopulation, int populationSize,int 
 		Mutate(child, mutationProbability);
 		for (int i = 0; i < number; i++)
 		{
-			nextPopulation[childrenCount][i] = child[i];
+			population[childrenCount+populationSize][i] = child[i];
 		}
+		
 
 		delete child;
 		childrenCount++;
 	}
 
-	for (int i = 0; i < populationSize; i++) {
-		fitness[i] = getFitness(nextPopulation[i], fitnessVariable);
-		if (elite < fitness[i]) elite = fitness[i];
-		//cout << i<<": " << fitness[i]<<endl;
+	for (int i = 0; i < bigPopulation; i++)
+	{
+		fitness[i] = getFitness(population[i], fitnessVariable);
 	}
+	quicksort(fitness, population,0, bigPopulation - 1);
 
+
+
+	elite = getFitness(population[0], fitnessVariable);
+
+	cout << "elite: " << elite << endl;
 	delete[] fitness;
+
 	return elite;
 }
 
 
 int Data::getFitness(int *temp, int fitnessVariable) {
-	int fitness = fitnessVariable - calculateRoute(temp);
+	int fitness = fitnessVariable - (int)calculateRoute(temp);
 	return fitness;
 }
 int* Data::RandomSelection(int *fitness, int **population,int populationSize) const
@@ -796,18 +822,16 @@ int* Data::RandomSelection(int *fitness, int **population,int populationSize) co
 	int totalFitness = 0;
 	for (auto i = 0; i < populationSize; i++)
 	{
-		//cout <<"fitness"<< fitness[i]<<endl;
 		totalFitness += fitness[i];
 	}
 	int stopAt = abs((rand()* rand()* rand()) % totalFitness);
-	
+
 	totalFitness = 0;
-	for (auto i = 0; i < populationSize; i++)
+	for (int i = 0; i < populationSize; i++)
 	{
 		totalFitness += fitness[i];
 		if (totalFitness >= stopAt)
 		{
-			//cout << "r: " << i << endl;
 			return population[i];
 		}
 	}
@@ -868,22 +892,6 @@ void Data::Mutate(int *t,float mutationProbability)
 		invertBuf[i] = t[b - i];
 	for (int i = 0; i < invertRange; ++i)
 		t[a + i] = invertBuf[i];
-	/*
-	int temp;
-	if ( rand() / static_cast<double>(RAND_MAX) > mutationProbability)
-		return;
-
-	int a = 1, b = 1;
-
-	while (a == b)
-	{
-		a = (int)rand() % (number - 1) + 1;
-		b = (int)rand() % (number - 1) + 1;
-	}
-	temp = t[a];
-	t[a] = t[b];
-	t[b] = temp;
-	*/
 }
 bool Data::Exists(int *child, int **population, size_t childrenCount)
 {
@@ -894,3 +902,32 @@ bool Data::Exists(int *child, int **population, size_t childrenCount)
 	}
 	return false;
 }
+void Data::quicksort(int* costsArray, int** population, int left, int right) {
+	double v = costsArray[(left + right) / 2];
+	int i = left;
+	int j = right;
+	double costBuf;
+	int* buf;
+	do {
+		while (costsArray[i]>v) i++;
+		while (costsArray[j]<v) j--;
+		if (i <= j) {
+			costBuf = costsArray[i];
+			buf = population[i];
+
+			costsArray[i] = costsArray[j];
+			population[i] = population[j];
+
+			costsArray[j] = costBuf;
+			population[j] = buf;
+
+			i++; j--;
+		}
+	} while (i <= j);
+
+	if (j>left)
+		quicksort(costsArray, population, left, j);
+	if (i<right)
+		quicksort(costsArray, population, i, right);
+}
+
