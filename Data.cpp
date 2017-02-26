@@ -1,7 +1,7 @@
 #include "Data.h"
 #include <algorithm>
 
-//domyœlny tylko do testów
+//domyœlny tylko do testów - mozna usunac caly
 Data::Data()
 {
 	city = new Point[10];
@@ -94,7 +94,6 @@ Data::Data(string filename)
 			for (int j = 0; j < number; j++) {
 				fin >> tempTab[j];
 				//cout << j << ": " << tempTab[j]<<" ";
-
 			}
 			for (int j = 0; j < number; j++) {
 				matrix[i][j] = tempTab[j];
@@ -102,7 +101,6 @@ Data::Data(string filename)
 		}
 	}
 	fin.close();
-
 }
 Data::~Data()
 {
@@ -247,14 +245,14 @@ void Data::tabuShow(int **tabu) {
 	{
 		for (int j = 0; j < number; j++)
 		{
-			cout.width(3);
+			cout.width(4);
 			cout << tabu[i][j];
 		}
 		cout << endl;
 	}
 }
 
-
+//Pol¹czyc te 3 funkcje i wywalic pomiar czasu do innej 
 void Data::search() {
 	int* route2 = new int[number];
 	double cost = 0;
@@ -264,7 +262,7 @@ void Data::search() {
 	T = setT();
 	double minT = 0.00001;
 	double dT = 0.9999;
-	randomRoute();
+	randomRoute(this->bestRoute);
 	for (int i = 0; i < number; i++) {
 		route2[i] = route[i];
 	}
@@ -438,7 +436,7 @@ void Data::search100(string name, double dT) {
 }
 
 
-
+//Wywaliæ pomiar czasu i obsluge pliku do innej
 void Data::tabuSearch(string name, int cadence) {
 	double cost = 0;
 	double cost2 = 0;
@@ -737,7 +735,7 @@ int Data::GA(int populationSize, int stagnationLimit, float mutationProbability,
 	}
 	if (fitnessVariable > (INT_MAX) / number)fitnessVariable /= 4;
 	fitnessVariable *= number;
-	cout << "testy" << fitnessVariable << endl;
+	//cout << "testy" << fitnessVariable << endl;
 	//system("pause");
 	for (auto i = 0; i < bigPopulation; i++) 
 	{
@@ -837,6 +835,7 @@ int* Data::RandomSelection(int *fitness, int **population,int populationSize) co
 	}
 	return nullptr;
 }
+//do usuniecia
 bool Data::Equals(int *parentA, int *parentB) {
 
 	return false;
@@ -893,6 +892,7 @@ void Data::Mutate(int *t,float mutationProbability)
 	for (int i = 0; i < invertRange; ++i)
 		t[a + i] = invertBuf[i];
 }
+//do usuniecia
 bool Data::Exists(int *child, int **population, size_t childrenCount)
 {
 	for (size_t i = 0; i < childrenCount; ++i)
